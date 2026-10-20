@@ -1,0 +1,48 @@
+{% load static %}
+
+<header class="site-header">
+  <div class="container header-inner">
+    <!-- Логотип -->
+    <a href="{% url 'home' %}" class="logo"> Manas<span>Tour</span> </a>
+
+    <!-- Навигация -->
+    <nav class="navigation">
+      <a href="{% url 'home' %}"> Главная </a>
+
+      <a href="{% url 'listings:places' %}">Места</a>
+
+      <a href="{% url 'listings:aboutus' %}">О нас</a>
+    </nav>
+
+    <!-- Правая часть -->
+    <div class="header-actions">
+      {% if user.is_authenticated %}
+
+      <!-- Профиль авторизованного пользователя -->
+      <a href="{% url 'registration:profile' %}" class="profile-link">
+        {% if user.avatar %}
+
+        <img
+          src="{{ user.avatar.url }}"
+          alt="{{ user.username }}"
+          class="profile-avatar"
+        />
+
+        {% else %}
+
+        <span class="profile-icon"> 👤 </span>
+
+        {% endif %}
+
+        <span class="profile-username"> {{ user.username }} </span>
+      </a>
+
+      {% else %}
+
+      <!-- Пользователь не авторизован -->
+      <a href="{% url 'registration:login' %}" class="login-btn"> Войти </a>
+
+      {% endif %}
+    </div>
+  </div>
+</header>

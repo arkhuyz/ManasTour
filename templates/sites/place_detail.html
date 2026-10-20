@@ -1,0 +1,213 @@
+{% extends "base.html" %} {% load static %} {% block title %}{{ place.title }} —
+ManasTour{% endblock %} {% block description %} {{
+place.description|truncatewords:25 }} {% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/sites.css' %}" />
+{% endblock %} {% block content %}
+<section class="place-detail">
+  <div class="place-detail-container">
+    <a href="{% url 'listings:places' %}" class="back-link"> ← Все места </a>
+
+    <div class="place-detail-card">
+      <div class="place-gallery">
+        {% for image in place.images.all %}
+        <img
+          src="{{ image.image.url }}"
+          alt="{{ place.title }}"
+          class="place-gallery-image"
+        />
+        {% empty %}
+        <div class="no-image">Фотографии пока не добавлены</div>
+        {% endfor %}
+      </div>
+
+      <div class="place-detail-info">
+        <div class="place-badges">
+          {% if place.category %}
+          <span class="place-badge"> {{ place.category.name }} </span>
+          {% endif %} {% if place.price_type == "free" %}
+          <span class="place-badge free">Бесплатно</span>
+          {% elif place.price_type == "paid" %}
+          <span class="place-badge paid">Платное посещение</span>
+          {% endif %}
+        </div>
+
+        <h1>{{ place.title }}</h1>
+
+        <div class="place-description">{{ place.description|linebreaks }}</div>
+
+        <div class="place-facts">
+          {% if place.address %}
+          <div class="place-fact">
+            <span class="fact-label">Адрес</span>
+            <span>{{ place.address }}</span>
+          </div>
+          {% endif %} {% if place.working_hours %}
+          <div class="place-fact">
+            <span class="fact-label">Часы работы</span>
+            <span>{{ place.working_hours }}</span>
+          </div>
+          {% endif %} {% if place.price_type == "paid" and place.cost %}
+          <div class="place-fact">
+            <span class="fact-label">Стоимость</span>
+            <span>{{ place.cost }}</span>
+          </div>
+          {% endif %} {% if place.average_rating %}
+          <div class="place-fact">
+            <span class="fact-label">Рейтинг</span>
+            <span>★ {{ place.average_rating }}</span>
+          </div>
+          {% endif %}
+        </div>
+
+        {% if place.factors.all %}
+        <div class="place-features">
+          <h2>Особенности места</h2>
+
+          <div class="features-list">
+            {% for factor in place.factors.all %}
+            <span class="feature-tag"> {{ factor.name }} </span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %} {% if place.lat and place.lon %}
+        <a
+          class="map-button"
+          href="https://www.google.com/maps?q={{ place.lat }},{{ place.lon }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Посмотреть на карте
+        </a>
+        {% endif %}
+      </div>
+      {% if user.is_authenticated %}
+      <form
+        method="post"
+        action="{% url 'listings:toggle_favorite' place.pk %}"
+      >
+        {% csrf_token %}
+
+        <button type="submit" class="favorite-button">
+          {% if is_favorite %} ♥ Убрать из избранного {% else %} ♡ Добавить в
+          избранное {% endif %}
+        </button>
+      </form>
+      {% else %}
+      <a href="{% url 'registration:login' %}" class="favorite-button">
+        ♡ Войти, чтобы сохранить
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="comments-section">
+  <h2>Отзывы и комментарии</h2>
+
+  <p class="comments-count">Комментарии посетителей: {{ comments|length }}</p>
+
+  {% if user.is_authenticated %}
+  <form method="post" class="comment-form">
+    {% csrf_token %}
+
+    <label for="comment-text">Оставить комментарий</label>
+
+    <textarea
+      id="comment-text"
+      name="text"
+      maxlength="2000"
+      rows="4"
+      placeholder="Поделитесь впечатлениями об этом месте..."
+      required
+    ></textarea>
+
+    <button type="submit" class="comment-submit">Опубликовать</button>
+  </form>
+  {% else %}
+  <div class="comment-login-notice">
+    <p>Чтобы оставить комментарий, необходимо войти в аккаунт.</p>
+
+    <a href="{% url 'registration:login' %}" class="comment-login-button">
+      Войти
+    </a>
+  </div>
+  {% endif %}
+
+  <div class="comments-list">
+    {% for comment in comments %}
+    <article class="comment-card">
+      <div class="comment-header">
+        <strong>{{ comment.author.username }}</strong>
+
+        <time datetime="{{ comment.created_at|date:'c' }}">
+          {{ comment.created_at|date:"d.m.Y H:i" }}
+        </time>
+      </div>
+
+      <p class="comment-text">{{ comment.text }}</p>
+    </article>
+    {% empty %}
+    <p class="comments-empty">Пока нет комментариев. Вы можете стать первым!</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="recommended-section">
+  <div class="recommended-container">
+    <div class="recommended-heading">
+      <div>
+        <span class="recommended-eyebrow">Откройте что-то новое</span>
+        <h2>Вам может понравиться</h2>
+        <p>Другие интересные места, которые стоит посетить.</p>
+      </div>
+
+      <a href="{% url 'listings:places' %}" class="all-places-link">
+        Все места →
+      </a>
+    </div>
+
+    <div class="recommended-grid">
+      {% for item in recommended_places %}
+      <article class="recommended-card">
+        <a
+          href="{% url 'listings:detail' item.pk %}"
+          class="recommended-image-link"
+        >
+          {% with main_image=item.images.all|first %} {% if main_image %}
+          <img
+            src="{{ main_image.image.url }}"
+            alt="{{ item.title }}"
+            class="recommended-image"
+            loading="lazy"
+          />
+          {% else %}
+          <div class="recommended-no-image">Фото пока нет</div>
+          {% endif %} {% endwith %}
+        </a>
+
+        <div class="recommended-card-content">
+          {% if item.category %}
+          <span class="recommended-category"> {{ item.category.name }} </span>
+          {% endif %}
+
+          <h3>
+            <a href="{% url 'listings:detail' item.pk %}"> {{ item.title }} </a>
+          </h3>
+
+          <p>{{ item.description|truncatewords:16 }}</p>
+
+          <a
+            href="{% url 'listings:detail' item.pk %}"
+            class="recommended-details"
+          >
+            Подробнее <span>→</span>
+          </a>
+        </div>
+      </article>
+      {% empty %}
+      <p class="recommended-empty">Пока нет других мест для рекомендаций.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

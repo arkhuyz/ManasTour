@@ -1,0 +1,130 @@
+{% extends "base.html" %} {% load static %} {% block title %} ManasTour — места
+и достопримечательности Джалал-Абадской области {% endblock %} {% block
+description %} ManasTour — найдите исторические места, достопримечательности,
+кафе, отели и другие интересные места города Манас и Джалал-Абадской области. {%
+endblock %} {% block content %}
+
+<section>
+  <section class="hero">
+    <div class="hero-overlay"></div>
+
+    <div class="container hero-content">
+      <span class="hero-badge">🌿 ManasTour</span>
+
+      <h1>Открой для себя<br /><span>Манас</span></h1>
+
+      <p>
+        Исследуй красивые места, достопримечательности и интересные уголки
+        города.
+      </p>
+
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input type="text" placeholder="Куда хотите отправиться?" />
+        <button>Найти</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="places-section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="section-label">DISCOVER</span>
+          <h2>Популярные места</h2>
+          <p>Места, которые стоит посетить в Манасе</p>
+        </div>
+
+        <a href="{% url 'listings:places' %}" class="all-link">
+          Смотреть все →
+        </a>
+      </div>
+
+      <div class="places-grid">
+        {% for place in places %}
+
+        <article class="place-card">
+          <div class="place-image">
+            {% for image in place.images.all %} {% if image.is_main %}
+            <img src="{{ image.image.url }}" alt="{{ place.title }}" />
+            {% endif %} {% empty %}
+            <div class="no-image">
+              <span>📍</span>
+            </div>
+            {% endfor %}
+
+            <span class="place-category"> {{ place.category.name }} </span>
+
+            {% if place.price_type == "free" %}
+            <span class="price-badge free"> Бесплатно </span>
+            {% else %}
+            <span class="price-badge"> Платно </span>
+            {% endif %}
+          </div>
+
+          <div class="place-content">
+            <h3>{{ place.title }}</h3>
+
+            <div class="place-location">
+              <span>📍</span>
+              {{ place.address }}
+            </div>
+
+            <p>{{ place.description|truncatechars:100 }}</p>
+
+            <div class="place-footer">
+              <div class="rating">
+                <span>★</span>
+                {{ place.average_rating }}
+              </div>
+
+              <a
+                href="{% url 'listings:detail' place.pk %}"
+                class="place-details-btn"
+              >
+                Подробнее
+              </a>
+            </div>
+          </div>
+        </article>
+
+        {% empty %}
+
+        <div class="empty-state">
+          <div class="empty-icon">📍</div>
+          <h3>Пока нет мест</h3>
+          <p>Добавьте первое туристическое место, и оно появится здесь.</p>
+        </div>
+
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="explore-section">
+    <div class="container explore">
+      <div>
+        <span class="section-label">MANASTOUR</span>
+
+        <h2>Твой следующий маршрут начинается здесь</h2>
+
+        <p>
+          Находи интересные места, планируй маршруты и открывай новые уголки
+          Манаса.
+        </p>
+
+        <a href="{% url 'listings:places' %}" class="explore-button">
+          Начать путешествие →
+        </a>
+      </div>
+
+      <div class="explore-decoration">
+        <span>🏔️</span>
+        <span>🌲</span>
+        <span>📍</span>
+      </div>
+    </div>
+  </section>
+</section>
+
+{% endblock %}

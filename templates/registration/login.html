@@ -1,0 +1,102 @@
+{% extends "base.html" %} {% load static %} {% block title %} ManasTour — места
+и достопримечательности Джалал-Абадской области {% endblock %} {% block
+description %} ManasTour — найдите исторические места, достопримечательности,
+кафе, отели и другие интересные места города Манас и Джалал-Абадской области. {%
+endblock %} {% block content %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}" />
+
+<section>
+  <div class="login-page">
+    <div class="login-left">
+      <div class="login-overlay"></div>
+
+      <div class="login-brand">
+        <div class="brand-icon">🌿</div>
+        <span>ManasTour</span>
+      </div>
+
+      <div class="login-info">
+        <span>MANASTOUR</span>
+
+        <h1>
+          Открой<br />
+          <strong>Манас</strong>
+        </h1>
+
+        <p>
+          Находи интересные места, планируй маршруты и открывай новые уголки
+          города.
+        </p>
+      </div>
+    </div>
+
+    <div class="login-right">
+      <div class="login-form-wrapper">
+        <div class="mobile-brand">🌿 ManasTour</div>
+
+        <div class="form-header">
+          <span>Добро пожаловать</span>
+
+          <h2>Войти в аккаунт</h2>
+
+          <p>Введите свои данные, чтобы продолжить.</p>
+        </div>
+
+        <form method="post">
+          {% csrf_token %} {% if form.errors %}
+          <div class="form-error">
+            Неверный логин или пароль. Проверьте введённые данные.
+          </div>
+          {% endif %}
+
+          <div class="input-group">
+            <label for="id_username"> Имя пользователя </label>
+
+            <input
+              type="text"
+              name="username"
+              id="id_username"
+              placeholder="Введите имя пользователя"
+              autocomplete="username"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="id_password"> Пароль </label>
+
+            <input
+              type="password"
+              name="password"
+              id="id_password"
+              placeholder="Введите пароль"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+
+          <div class="form-options">
+            <label class="remember">
+              <input type="checkbox" name="remember" />
+              <span>Запомнить меня</span>
+            </label>
+
+            <a href="#"> Забыли пароль? </a>
+          </div>
+
+          <button type="submit" class="login-button">
+            Войти
+            <span>→</span>
+          </button>
+        </form>
+
+        <div class="register">
+          <span>Ещё нет аккаунта?</span>
+
+          <a href="{% url 'registration:register' %}"> Зарегистрироваться </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

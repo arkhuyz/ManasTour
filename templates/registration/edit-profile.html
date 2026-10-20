@@ -1,0 +1,162 @@
+{% extends "base.html" %} {% load static %} {% block title %}Редактирование
+профиля — ManasTour{% endblock %} {% block description %} Изменение личных
+данных и аватара профиля ManasTour. {% endblock %} {% block content %}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}" />
+
+<section class="edit-profile-page">
+  <div class="edit-profile-container">
+    <div class="edit-profile-heading">
+      <a href="{% url 'registration:profile' %}" class="back-link">
+        ← Вернуться в профиль
+      </a>
+
+      <span class="eyebrow">НАСТРОЙКИ АККАУНТА</span>
+      <h1>Редактирование профиля</h1>
+      <p>Обнови информацию о себе, чтобы твой профиль был актуальным.</p>
+    </div>
+
+    <div class="edit-profile-card">
+      <div class="profile-card-heading">
+        <div>
+          <h2>Личная информация</h2>
+          <p>Измени необходимые поля и сохрани изменения.</p>
+        </div>
+        <span class="profile-icon">✎</span>
+      </div>
+
+      {% if messages %} {% for message in messages %}
+      <div class="form-message {{ message.tags }}">{{ message }}</div>
+      {% endfor %} {% endif %}
+
+      <form
+        method="post"
+        enctype="multipart/form-data"
+        class="edit-profile-form"
+      >
+        {% csrf_token %}
+
+        <!-- <div class="avatar-section">
+          <div class="avatar-preview">
+            {% if user.avatar %}
+            <img
+              src="{{ user.avatar.url }}"
+              alt="Аватар пользователя"
+              id="avatarPreview"
+            />
+            {% else %}
+            <div class="avatar-placeholder" id="avatarPlaceholder">
+              {{ user.username|first|upper }}
+            </div>
+            <img
+              src=""
+              alt="Предварительный просмотр аватара"
+              id="avatarPreview"
+              hidden
+            />
+            {% endif %}
+          </div>
+
+          <div class="avatar-controls">
+            <h3>Фотография профиля</h3>
+            <p>Выбери изображение с устройства.</p>
+
+            <label for="id_avatar" class="avatar-upload-button">
+              Выбрать фотографию
+            </label>
+
+            <input
+              type="file"
+              name="avatar"
+              id="id_avatar"
+              accept="image/*"
+              class="avatar-file-input"
+            />
+
+            {% if form.avatar.errors %}
+            <div class="field-error">{{ form.avatar.errors }}</div>
+            {% endif %}
+          </div>
+        </div> -->
+
+        <div class="form-divider"></div>
+
+        <div class="form-field">
+          <label for="id_username">Имя пользователя</label>
+          <input
+            type="text"
+            name="username"
+            id="id_username"
+            value="{{ form.username.value|default_if_none:'' }}"
+            placeholder="Например: aikhan"
+            maxlength="150"
+            required
+          />
+          {% if form.username.errors %}
+          <div class="field-error">{{ form.username.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-field">
+          <label for="id_email">Электронная почта</label>
+          <input
+            type="email"
+            name="email"
+            id="id_email"
+            value="{{ form.email.value|default_if_none:'' }}"
+            placeholder="example@mail.com"
+            required
+          />
+          {% if form.email.errors %}
+          <div class="field-error">{{ form.email.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-field">
+          <label for="id_first_name">Имя</label>
+          {{ form.first_name }} {% if form.first_name.errors %}
+          <div class="field-error">{{ form.first_name.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-field">
+          <label for="id_last_name">Фамилия</label>
+          {{ form.last_name }} {% if form.last_name.errors %}
+          <div class="field-error">{{ form.last_name.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-actions">
+          <a href="{% url 'registration:profile' %}" class="cancel-button">
+            Отмена
+          </a>
+
+          <button type="submit" class="save-button">Сохранить изменения</button>
+        </div>
+      </form>
+    </div>
+
+    <p class="edit-profile-note">
+      Изменения коснутся только твоего профиля ManasTour.
+    </p>
+  </div>
+</section>
+
+<script>
+  const avatarInput = document.getElementById("id_avatar");
+  const avatarPreview = document.getElementById("avatarPreview");
+  const avatarPlaceholder = document.getElementById("avatarPlaceholder");
+
+  avatarInput.addEventListener("change", function () {
+    const file = this.files[0];
+
+    if (file && file.type.startsWith("image/")) {
+      avatarPreview.src = URL.createObjectURL(file);
+      avatarPreview.hidden = false;
+
+      if (avatarPlaceholder) {
+        avatarPlaceholder.style.display = "none";
+      }
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,200 @@
+{% extends "base.html" %} {% load static %} {% block title %} ManasTour —
+название страницы {% endblock %} {% block description %} Описание страницы
+ManasTour {% endblock %} {% block content %}
+
+<link rel="stylesheet" href="{% static 'css/registration.css.' %}" />
+
+
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+
+  <section class="profile-page">
+    <div class="profile-container">
+      <!-- Верхняя часть профиля -->
+      <div class="profile-card">
+        <div class="profile-cover">
+          <div class="cover-pattern"></div>
+        </div>
+
+        <div class="profile-main">
+          <!-- Аватар -->
+          <div class="profile-avatar">
+            {% if user.avatar %}
+            <img src="{{ user.avatar.url }}" alt="Аватар {{ user.username }}" />
+            {% else %}
+            <div class="avatar-placeholder">👤</div>
+            {% endif %}
+          </div>
+
+          <!-- Информация -->
+          <div class="profile-info">
+            <span class="profile-label"> ПОЛЬЗОВАТЕЛЬ MANASTOUR </span>
+
+            <h1>
+              {{user.username}}
+            </h1>
+
+            <p class="username">@{{ user.username }}</p>
+          </div>
+
+          <!-- Кнопка редактирования -->
+          <a href="{% url 'registration:edit_profile' %}" class="edit-profile-link">
+    <span>✎</span>
+    Редактировать профиль
+</a>
+        </div>
+      </div>
+
+      <!-- Информация пользователя -->
+      <div class="profile-grid">
+        <div class="profile-section">
+          <div class="section-header">
+            <div class="section-icon">👤</div>
+
+            <div>
+              <h2>Личная информация</h2>
+              <p>Основная информация вашего аккаунта</p>
+            </div>
+          </div>
+
+          <div class="info-list">
+            <div class="info-item">
+              <div class="info-icon">👤</div>
+
+                  
+<div class="profile-info">
+
+  <span class="profile-label">
+    ПОЛЬЗОВАТЕЛЬ MANASTOUR
+  </span>
+
+  <h1>{{ user.username }}</h1>
+
+  <p class="username">
+    @{{ user.username }}
+  </p>
+
+</div>
+
+
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">✉️</div>
+
+              <div>
+                <span>Email</span>
+
+                {% if user.email %}
+                <strong>{{ user.email }}</strong>
+                {% else %}
+                <strong class="empty-value"> Email не указан </strong>
+                {% endif %}
+              </div>
+            </div>
+
+            {% if user.full_name %}
+            <div class="info-item">
+              <div class="info-icon">🪪</div>
+
+              <div>
+                <span>Полное имя</span>
+                <strong>{{ user.full_name }}</strong>
+              </div>
+            </div>
+            {% endif %}
+
+            <div class="info-item">
+              <div class="info-icon">📅</div>
+
+              <div>
+                <span>Дата регистрации</span>
+
+                <strong> {{ user.date_joined|date:"d.m.Y" }} </strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Быстрые действия -->
+        <div class="profile-section actions-section">
+          <div class="section-header">
+            <div class="section-icon">🧭</div>
+
+            <div>
+              <h2>Мой ManasTour</h2>
+              <p>Управление вашим аккаунтом</p>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <a href="{% url 'listings:favorites' %}" class="profile-action">
+    <span class="action-icon">❤️</span>
+    <span>
+        <strong>Избранные места</strong>
+        <small>Места, которые вам понравились</small>
+    </span>
+    <span class="action-arrow">→</span>
+</a>
+
+            <a href="#" class="profile-action">
+              <span class="action-icon"> ⭐ </span>
+
+              <span>
+                <strong>Мои отзывы</strong>
+                <small> Ваши отзывы о местах </small>
+              </span>
+
+              <span class="action-arrow"> → </span>
+            </a>
+
+            <a href="#" class="profile-action">
+              <span class="action-icon"> ⚙️ </span>
+
+              <span>
+                <strong>Настройки</strong>
+                <small> Настройки аккаунта </small>
+              </span>
+
+              <span class="action-arrow"> → </span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Выход -->
+      <div class="logout-card">
+
+        <div>
+          <h3>Выйти из аккаунта?</h3>
+
+          <p>
+            После выхода вам потребуется снова войти,
+            чтобы пользоваться аккаунтом.
+          </p>
+        </div>
+
+        <form
+          method="post"
+          action="{% url 'registration:logout' %}"
+        >
+          {% csrf_token %}
+
+          <button
+            type="submit"
+            class="logout-button"
+          >
+            Выйти
+          </button>
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}
+

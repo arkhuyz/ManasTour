@@ -1,0 +1,106 @@
+<footer class="mt-footer">
+  <div class="mt-footer-main">
+    <div class="container">
+      <!-- Верхняя часть -->
+      <div class="mt-footer-top">
+        <div class="mt-footer-brand">
+          <a href="{% url 'home' %}" class="mt-footer-logo">
+            <span class="mt-logo-icon">✦</span>
+            <span>Manas<span>Tour</span></span>
+          </a>
+
+          <p>
+            Открывайте интересные места города Манас. Достопримечательности,
+            кафе, рестораны, отели и места для отдыха — всё в одном месте.
+          </p>
+
+          <a href="{% url 'home' %}" class="mt-footer-explore">
+            Исследовать Манас
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- Навигация -->
+        <div class="mt-footer-column">
+          <h3>ManasTour</h3>
+
+          <a href="{% url 'home' %}">Главная</a>
+          <a href="{% url 'listings:places' %}">Все места</a>
+          <a href="{% url 'listings:places' %}">Популярные места</a>
+          <a href="{% url 'listings:places' %}">Новые места</a>
+        </div>
+
+        <!-- Для пользователей -->
+        <div class="mt-footer-column">
+          <h3>Для пользователей</h3>
+
+          <a href="{% url 'listings:favorites' %}">Избранное</a>
+          <a href="#">Мои отзывы</a>
+          <a href="#">Мой профиль</a>
+          <a href="#">Добавить место</a>
+          <a href="#">Помощь</a>
+        </div>
+
+        <!-- Контакты -->
+        <div class="mt-footer-column mt-contact">
+          <h3>Контакты</h3>
+
+          <div class="mt-contact-item">
+            <span class="mt-contact-icon">📍</span>
+            <span>г. Манас,<br />Кыргызстан</span>
+          </div>
+
+          <div class="mt-contact-item">
+            <span class="mt-contact-icon">✉</span>
+            <span>info@manastour.kg</span>
+          </div>
+
+          <div class="mt-contact-item">
+            <span class="mt-contact-icon">☎</span>
+            <span>+996 555 000 000</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Разделитель -->
+      <div class="mt-footer-line"></div>
+
+      <!-- Социальные сети -->
+      <div class="mt-footer-middle">
+        <div>
+          <h3>Следите за нами</h3>
+          <p>Будьте в курсе новых мест и интересных событий.</p>
+        </div>
+
+        <div class="mt-socials">
+          <a href="#" aria-label="Instagram">
+            <span>◎</span>
+            Instagram
+          </a>
+
+          <a href="#" aria-label="Telegram">
+            <span>➤</span>
+            Telegram
+          </a>
+
+          <a href="#" aria-label="TikTok">
+            <span>♪</span>
+            TikTok
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Нижняя часть -->
+  <div class="mt-footer-bottom">
+    <div class="container">
+      <p>© 2026 ManasTour. Все права защищены.</p>
+
+      <div class="mt-footer-legal">
+        <a href="{% url 'listings:privacy' %}"> Политика конфиденциальности </a>
+        <a href="{% url 'listings:terms' %}"> Условия использования </a>
+      </div>
+    </div>
+  </div>
+</footer>

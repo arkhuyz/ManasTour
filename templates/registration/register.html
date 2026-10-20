@@ -1,0 +1,160 @@
+{% extends "base.html" %} {% load static %} {% block title %} ManasTour — места
+и достопримечательности Джалал-Абадской области {% endblock %} {% block
+description %} ManasTour — найдите исторические места, достопримечательности,
+кафе, отели и другие интересные места города Манас и Джалал-Абадской области. {%
+endblock %} {% block content %}
+
+<section>
+  <link rel="stylesheet" href="{% static 'css/registration.css' %}" />
+  <div class="register-page">
+    <!-- Левая часть -->
+    <div class="register-left">
+      <div class="register-overlay"></div>
+
+      <div class="register-brand">
+        <div class="brand-icon">🌿</div>
+        <span>ManasTour</span>
+      </div>
+
+      <div class="register-info">
+        <span>MANASTOUR</span>
+
+        <h1>
+          Начни своё<br />
+          <strong>путешествие</strong>
+        </h1>
+
+        <p>
+          Создай аккаунт и открывай интересные места, достопримечательности и
+          новые маршруты города.
+        </p>
+      </div>
+    </div>
+
+    <!-- Правая часть -->
+    <div class="register-right">
+      <div class="register-form-wrapper">
+        <div class="mobile-brand">🌿 ManasTour</div>
+
+        <div class="form-header">
+          <span>Добро пожаловать</span>
+
+          <h2>Создать аккаунт</h2>
+
+          <p>Заполни форму, чтобы присоединиться к ManasTour.</p>
+        </div>
+
+        {% if form.errors %}
+
+        <div class="form-error">Пожалуйста, исправьте ошибки в форме.</div>
+
+        {% endif %}
+
+        <form action="{% url 'registration:register' %}" method="post">
+          {% csrf_token %}
+
+          <!-- Username -->
+          <div class="input-group">
+            <label for="id_username">Имя пользователя</label>
+            <input
+              type="text"
+              name="username"
+              id="id_username"
+              placeholder="Например: aikhan"
+              autocomplete="username"
+              value="{{ form.username.value|default:'' }}"
+              required
+            />
+            {% if errors.username %}
+            <div class="field-error">{{ errors.username }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Email -->
+          <div class="input-group">
+            <label for="id_email">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="id_email"
+              placeholder="example@mail.com"
+              autocomplete="email"
+              value="{{ form.email.value|default:'' }}"
+              required
+            />
+            {% if errors.email %}
+            <div class="field-error">{{ errors.email }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Password -->
+          <div class="input-group">
+            <label for="id_password1">Пароль</label>
+            <input
+              type="password"
+              name="password1"
+              id="id_password1"
+              placeholder="Придумайте пароль"
+              autocomplete="new-password"
+              required
+            />
+            {% if errors.password1 %}
+            <div class="field-error">{{ errors.password1 }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Confirm password -->
+          <div class="input-group">
+            <label for="id_password2">Подтвердите пароль</label>
+            <input
+              type="password"
+              name="password2"
+              id="id_password2"
+              placeholder="Повторите пароль"
+              autocomplete="new-password"
+              required
+            />
+            {% if errors.password2 %}
+            <div class="field-error">{{ errors.password2 }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Agreement -->
+          <div class="agreement-group">
+            <label class="agreement-label" for="id_agreement">
+              <input
+                type="checkbox"
+                name="agreement"
+                id="id_agreement"
+                required
+              />
+              <span>
+                Я согласен с
+                <a href="#" target="_blank">условиями использования</a>
+                и
+                <a href="#" target="_blank">политикой конфиденциальности</a>.
+              </span>
+            </label>
+
+            {% if errors.agreement %}
+            <div class="field-error">{{ errors.agreement }}</div>
+            {% endif %}
+          </div>
+
+          <button type="submit" class="register-button">
+            Создать аккаунт
+            <span>→</span>
+          </button>
+        </form>
+
+        <div class="login-link">
+          <span>Уже есть аккаунт?</span>
+
+          <a href="{% url 'registration:login' %}"> Войти </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

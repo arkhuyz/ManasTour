@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% load static %} {% block title %}Избранное —
+ManasTour{% endblock %} {% block description %} Сохранённые места и
+достопримечательности на ManasTour. {% endblock %} {% block content %}
+<link rel="stylesheet" href="{% static 'css/sites.css' %}" />
+
+<section class="favorites-page">
+  <h1>Избранные места</h1>
+  <p>Места, которые вы сохранили для будущих путешествий.</p>
+
+  <div class="favorites-grid">
+    {% for place in places %}
+    <article class="favorite-card">
+      <div class="favorite-card-content">
+        <h2>{{ place.title }}</h2>
+        <p>{{ place.description|truncatewords:20 }}</p>
+        <p>{{ place.address }}</p>
+
+        <a href="{% url 'listings:detail' place.pk %}" class="favorite-open">
+          Подробнее
+        </a>
+
+        <form
+          method="post"
+          action="{% url 'listings:toggle_favorite' place.pk %}"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}" />
+
+          <button type="submit" class="favorite-remove">
+            ♥ Убрать из избранного
+          </button>
+        </form>
+      </div>
+    </article>
+    {% empty %}
+    <div class="favorites-empty">
+      <h2>Пока здесь пусто</h2>
+      <p>Добавляйте интересные места в избранное, чтобы не потерять их.</p>
+      <a href="{% url 'home' %}">Найти места</a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
