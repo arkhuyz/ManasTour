@@ -2187,7 +2187,6 @@ select {
 
     /* Описание не длиннее двух строк */
     display: -webkit-box;
-    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -2338,5 +2337,18 @@ select {
   .profile-link,
   .mt-footer a {
     transition: none;
+  }
+}
+
+@media (max-width: 650px) {
+  .container {
+    width: calc(100% - 28px);
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .mt-footer-brand p {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
   }
 }
